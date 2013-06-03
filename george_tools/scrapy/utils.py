@@ -1,7 +1,7 @@
-__all__ = ['set_jobid',]
+__all__ = ['set_job_info',]
 
 import os
-def set_jobid(spider_class):
+def set_job_info(spider_class):
     '''
     simple way to add scrapyd's jobid into spider
 
@@ -15,7 +15,13 @@ def set_jobid(spider_class):
 
     '''
     def __init__(self, *args, **kwargs):
-        self.jobid = os.environ.get('SCRAPY_JOB', "")
+        job_info = dict()
+        job_info['id'] = os.environ.get('SCRAPY_JOB', '')
+        job_info['project'] = os.environ.get('SCRAPY_PROJECT', '')
+        job_info['log'] = os.environ.get('SCRAPY_LOG_FILE', '')
+        job_info['data'] = os.environ.get('SCRAPY_FEED_URI', '')
+
+        self.job_info = job_info
         super(spider_class, self).__init__(*args, **kwargs)
 
     spider_class.__init__ = __init__
