@@ -1,7 +1,11 @@
 __all__ = ['set_job_info', 'close_job', 'open_spider']
-import urllib2, urllib
+
 import urlparse
 import os
+
+from george_tools.utils import system as system_util
+
+
 def set_job_info(spider_class):
     '''
     simple way to add scrapyd's jobid into spider
@@ -28,22 +32,22 @@ def set_job_info(spider_class):
     spider_class.__init__ = __init__
     return spider_class
 
-def close_job(project, jobid, host="http://localhost:6800"):
+
+def close_job(project, jobid, host="http://localhost:6800", time='now'):
     url = urlparse.urljoin(host, 'cancel.json')
-    data = dict()
-    data['project'] = project
-    data['job'] = jobid
 
-    data_str = urllib.urlencode(data)
-    req = urllib2.Request(url, data_str)
-    urllib2.urlopen(req)
+    script = '''
+    curl {} -d project={} -d spider={}
+    '''.format(url, project, jobid)
 
-def open_spider(project, spider, host="http://localhost:6800"):
+    system_util.at(time, script)
+
+
+def open_spider(project, spider, host="http://localhost:6800", time='now'):
     url = urlparse.urljoin(host, 'schedule.json')
-    data = dict()
-    data['project'] = project
-    data['spider'] = spider
 
-    data_str = urllib.urlencode(data)
-    req = urllib2.Request(url, data_str)
-    urllib2.urlopen(req)
+    script = '''
+    curl {} -d project={} -d spider={}
+    '''.format(url, project, spider)
+
+    system_util.at(time, script)
