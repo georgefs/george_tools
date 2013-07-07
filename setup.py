@@ -13,5 +13,5 @@ setup(
     url="http://georgeli.tk",
     name='george_tools',
     packages=find_packages(),
-    install_requires=[]
+    install_requires=['sympy']
 )
