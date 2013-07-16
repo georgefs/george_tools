@@ -17,7 +17,11 @@ city_geo_datas = json.loads(geo_file.read())['features']
 def get_county(lat, lng):
     try:
         data = google.get_address(lat, lng)
-        county_info = data[-3]
+        for d in data:
+            if "administrative_area_level_2" in d['types']:
+                county_info = d
+            elif "country" in d['types']:
+                assert d['short_name'] == "TW", 'error country'
         county_name = county_info['long_name']
     except Exception:
         county_name = parse_county(lat, lng)
