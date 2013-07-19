@@ -37,7 +37,7 @@ def close_job(project, jobid, host="http://localhost:6800", time='now'):
     url = urlparse.urljoin(host, 'cancel.json')
 
     script = '''
-    curl {} -d project={} -d spider={}
+    curl {} -d project={} -d job={}
     '''.format(url, project, jobid)
 
     system_util.at(time, script)
