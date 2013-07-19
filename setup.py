@@ -6,12 +6,13 @@ except:
 import george_tools as distmeta
 
 setup(
-    version="0.0.1",
+    version="0.0.2",
     description="",
     author="george",
     author_email="goblin.george@gmail.com",
     url="http://georgeli.tk",
     name='george_tools',
     packages=find_packages(),
-    install_requires=[]
+    include_package_data=True,
+    install_requires=['sympy']
 )
